@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loginscreen"
+    tools:context=".Login">
+
+    <EditText
+        android:id="@+id/text_loginmail"
+        android:layout_width="374dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="352dp"
+        android:drawableLeft="@drawable/mailicon"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="example@gmail.com"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/text_loginpassword"
+        android:layout_width="374dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:drawableStart="@drawable/lockicon"
+        android:drawableLeft="@drawable/lockicon"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_loginmail" />
+
+    <Button
+        android:id="@+id/button_forgotp"
+        android:layout_width="164dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="248dp"
+        android:layout_marginLeft="248dp"
+        android:background="@android:color/transparent"
+        android:text="Forgot password?"
+        android:textColor="?attr/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_loginpassword" />
+
+    <CheckBox
+        android:id="@+id/showpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="356dp"
+        android:layout_marginTop="416dp"
+        android:button="@drawable/showicon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="374dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="29dp"
+        android:background="@drawable/buttondesing3"
+        android:text="Log in"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_forgotp" />
+
+    <Button
+        android:id="@+id/button_signup"
+        android:layout_width="369dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/buttondesing4"
+        android:text="Sign up"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="363dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="9dp"
+        android:text="------------------------------------   or   -----------------------------------"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="195dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="192dp"
+        android:layout_marginRight="192dp"
+        android:text="Welcome Back"
+        android:textColor="@android:color/background_light"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

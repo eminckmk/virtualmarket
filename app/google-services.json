@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "814314282660",
+    "project_id": "veritabaniodevi-5eea9",
+    "storage_bucket": "veritabaniodevi-5eea9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814314282660:android:4da9201cef8bab64fad031",
+        "android_client_info": {
+          "package_name": "com.example.veritabaniodevi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "814314282660-qa4fqt7oad9vtn9sjbhg9d144ind40p8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCnstTAnAOLRtbmzUUpoxML1Tzh4NR8vY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "814314282660-qa4fqt7oad9vtn9sjbhg9d144ind40p8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
