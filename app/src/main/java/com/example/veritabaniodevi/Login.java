@@ -65,28 +65,36 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                try{
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
 
-                fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                if (email.equals("")) {
 
-                            Toast.makeText(Login.this,"Login Successful!",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Login.this,HomePage.class);
-                            startActivity(intent);
-                            finish();
+                    Intent intent = new Intent(Login.this, AdminHomePage.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    try {
 
-                        }
-                        else{
-                            Toast.makeText(Login.this,"Username or Password is Wrong",Toast.LENGTH_SHORT).show();
-                        }
+                        fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+
+                                    Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Login.this, HomePage.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                } else {
+                                    Toast.makeText(Login.this, "Username or Password is Wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } catch (Exception ea) {
+                        Toast.makeText(Login.this, "username or Password cannot be lank", Toast.LENGTH_SHORT).show();
                     }
-                });
-            }catch (Exception ea){
-                    Toast.makeText(Login.this,"username or Password cannot be lank",Toast.LENGTH_SHORT).show();
                 }
             }
         });

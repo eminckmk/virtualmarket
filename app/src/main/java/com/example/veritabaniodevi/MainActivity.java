@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent gologin = new Intent(MainActivity.this, Login.class);
 
-                Log.e("yazilicak sey","test" );
+                Intent gologin = new Intent(MainActivity.this, Login.class);
                 startActivity(gologin);
+
             }
         });
 
