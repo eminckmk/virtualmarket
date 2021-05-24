@@ -1,6 +1,9 @@
 package com.example.veritabaniodevi;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Catego
 
     private ArrayList<String> userCommentList;
     private ArrayList<String> userImageList;
+    private Context context;
 
     public AdapterCategory(ArrayList<String> userCommentList, ArrayList<String> userImageList) {
         this.userCommentList = userCommentList;
@@ -38,13 +42,19 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Catego
 
         holder.categoryName.setText(userCommentList.get(position));
         Picasso.get().load(userImageList.get(position)).into(holder.categoryimage);
+        holder.categoryimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               v.getContext().startActivity(new Intent(v.getContext(),AdminProduct.class));
+
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() { return userCommentList.size();}
-
-
 
     class CategoryHolder extends RecyclerView.ViewHolder {
 

@@ -84,14 +84,17 @@ public class AdminHomePage extends AppCompatActivity {
 
                         //Casting
                         String comment = (String) data.get("comment");
-                        String userEmail = (String) data.get("useremail");
                         String downloadUrl = (String) data.get("downloadurl");
 
                         userCommentFromFB.add(comment);
-                        userEmailFromFB.add(userEmail);
                         userImageFromFB.add(downloadUrl);
 
-                        adapterCategory.notifyDataSetChanged();
+                        try {
+                            adapterCategory.notifyDataSetChanged();
+                        }catch (Exception ea){
+
+                        }
+
 
 
 
