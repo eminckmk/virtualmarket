@@ -29,63 +29,76 @@ import java.util.Map;
 
 public class AdminHomePage extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
     ArrayList<String> userEmailFromFB;
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
-    AdapterCategory adapterCategory;
     FirestoreRecyclerOptions<Categorys> test;
 
-    FloatingActionButton fabCategoryAdd;
+    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference categoryRef = db.collection("Category");
+    private  AdapterCategory adapterCategory;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home_page);
 
-        fabCategoryAdd = findViewById(R.id.fabCategoryAdd);
-        fabCategoryAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminHomePage.this,AdminCategoryAdd.class);
-                startActivity(intent);
-            }
-        });
-
         userCommentFromFB = new ArrayList<>();
         userEmailFromFB = new ArrayList<>();
         userImageFromFB = new ArrayList<>();
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
 
         getDataFromFirestore();
 
-        RecyclerView rv = findViewById(R.id.rv2);
-        rv.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
-        adapterCategory = new AdapterCategory(userCommentFromFB,userImageFromFB);
+        setUpRecyclerview();
 
-
-        rv.setAdapter(adapterCategory);
     }
+
+    private void  setUpRecyclerview(){
+        Query query = categoryRef.orderBy("comment",Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<Categorys> options = new FirestoreRecyclerOptions.Builder<Categorys>().setQuery(query,Categorys.class).build();
+
+        adapterCategory = new AdapterCategory(options,userCommentFromFB,userImageFromFB);
+
+        RecyclerView recyclerView = findViewById(R.id.rv2);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapterCategory);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapterCategory.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapterCategory.stopListening();
+    }
+
 
     public void getDataFromFirestore() {
 
-        CollectionReference collectionReference = firebaseFirestore.collection("Category");
+        CollectionReference collectionReference = db.collection("Category");
 
         collectionReference.orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                 if (e != null) {
-                    Toast.makeText(AdminHomePage.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(AdminHomePage.this, e.getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
                 }
 
                 if (queryDocumentSnapshots != null) {
 
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
 
-                        Map<String,Object> data = snapshot.getData();
+                        Map<String, Object> data = snapshot.getData();
 
                         //Casting
                         String comment = (String) data.get("comment");
@@ -96,11 +109,9 @@ public class AdminHomePage extends AppCompatActivity {
 
                         try {
                             adapterCategory.notifyDataSetChanged();
-                        }catch (Exception ea){
+                        } catch (Exception ea) {
 
                         }
-
-
 
 
                     }
@@ -108,10 +119,8 @@ public class AdminHomePage extends AppCompatActivity {
 
                 }
 
+
             }
         });
-
-
-    }}
-
-
+    }
+}

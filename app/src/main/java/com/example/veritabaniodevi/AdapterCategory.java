@@ -34,93 +34,79 @@ import com.squareup.picasso.Picasso;
 import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Locale;
-public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.CategoryHolder> {
-
+public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, AdapterCategory.CategoryHolder> {
 
     private ArrayList<String> userCommentList;
     private ArrayList<String> userImageList;
     private Context context;
     private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth firebaseAuth;
 
-    public AdapterCategory(ArrayList<String> userCommentList, ArrayList<String> userImageList) {
-
+    public AdapterCategory(@NonNull FirestoreRecyclerOptions<Categorys> options,ArrayList<String> userCommentList, ArrayList<String> userImageList) {
+        super(options);
         this.userCommentList = userCommentList;
         this.userImageList = userImageList;
     }
 
-
-
-    @NonNull
     @Override
-    public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    protected void onBindViewHolder(@NonNull CategoryHolder categoryHolder, int i, @NonNull Categorys categorys) {
 
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.card_category,parent,false);
-        return new CategoryHolder(view);
-    }
+        categoryHolder.textCategoryName.setText(userCommentList.get(i));
 
-
-    @Override
-    public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
-
-        holder.categoryName.setText(userCommentList.get(position));
-        Picasso.get().load(userImageList.get(position)).into(holder.categoryimage);
-        holder.categoryimage.setOnClickListener(new View.OnClickListener() {
+        Picasso.get().load(userImageList.get(i)).into(categoryHolder.categoryimage);
+        categoryHolder.categoryimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.getContext().startActivity(new Intent(v.getContext(),AdminProduct.class));
             }
         });
 
-        holder.imageButtonCategoryDelete.setOnClickListener(new View.OnClickListener() {
+        categoryHolder.imageButtonCategoryDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebaseFirestore = FirebaseFirestore.getInstance();
-                firebaseAuth = FirebaseAuth.getInstance();
+                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
 
 
-                String id =  null;
-                //String değerini elde edeceğin yer
+                String myId = getSnapshots().getSnapshot(i).getReference().getId();
+                Log.e( "onClick: ",myId);
+                DocumentReference documentReference = firebaseFirestore.collection("Category").document(myId);
 
 
 
-                DocumentReference documentReference = firebaseFirestore.collection("Category").document("8Upxy7qhD5hlnNUthiDv");
                 documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Log.e("s","oldu"+ id);
+                            Log.e("s","oldu" );
                         }
                     }
                 });
 
+
             }
         });
+    }
 
+    @NonNull
+    @Override
+    public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v =LayoutInflater.from(parent.getContext()).inflate(R.layout.card_category,parent,false);
+        return new CategoryHolder(v);
     }
 
 
-
-    @Override
-    public int getItemCount() { return userCommentList.size();}
-
-    class CategoryHolder extends RecyclerView.ViewHolder {
+    class CategoryHolder extends RecyclerView.ViewHolder{
 
         ImageView categoryimage;
-        TextView categoryName;
+        TextView textCategoryName;
         ImageButton imageButtonCategoryDelete;
 
         public CategoryHolder(@NonNull View itemView) {
             super(itemView);
-
-            categoryName = itemView.findViewById(R.id.textViewCategoryName);
-            categoryimage = itemView.findViewById(R.id.imageViewCategoryImage);
+            textCategoryName = itemView.findViewById(R.id.textViewCategoryName);
             imageButtonCategoryDelete = itemView.findViewById(R.id.imageButtonCategoryDelete);
-
+            categoryimage = itemView.findViewById(R.id.imageViewCategoryImage);
         }
-
     }
 
 }
