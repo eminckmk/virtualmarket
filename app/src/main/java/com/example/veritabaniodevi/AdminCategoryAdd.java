@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,8 +16,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,6 +48,7 @@ public class AdminCategoryAdd extends AppCompatActivity {
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
+    public HashMap<String, Object> postData = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class AdminCategoryAdd extends AppCompatActivity {
         storageReference = firebaseStorage.getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
 
     }
 
@@ -87,11 +92,12 @@ public class AdminCategoryAdd extends AppCompatActivity {
 
                             String comment = textCategory.getText().toString();
 
-                            HashMap<String, Object> postData = new HashMap<>();
+
                             postData.put("useremail",userEmail);
                             postData.put("downloadurl",downloadUrl);
                             postData.put("comment",comment);
                             postData.put("date", FieldValue.serverTimestamp());
+
 
                             firebaseFirestore.collection("Category").add(postData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
@@ -187,4 +193,8 @@ public class AdminCategoryAdd extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+
+
 }

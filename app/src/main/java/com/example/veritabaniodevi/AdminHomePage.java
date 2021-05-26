@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+
 public class AdminHomePage extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -33,6 +35,7 @@ public class AdminHomePage extends AppCompatActivity {
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
     AdapterCategory adapterCategory;
+    FirestoreRecyclerOptions<Categorys> test;
 
     FloatingActionButton fabCategoryAdd;
     @Override
@@ -61,6 +64,8 @@ public class AdminHomePage extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.rv2);
         rv.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         adapterCategory = new AdapterCategory(userCommentFromFB,userImageFromFB);
+
+
         rv.setAdapter(adapterCategory);
     }
 
@@ -107,7 +112,6 @@ public class AdminHomePage extends AppCompatActivity {
         });
 
 
-    }
+    }}
 
 
-}

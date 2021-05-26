@@ -11,6 +11,7 @@
         android:layout_width="268dp"
         android:layout_height="248dp"
         android:layout_marginTop="16dp"
+        android:onClick="selectImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,11 +20,13 @@
 
     <Spinner
         android:id="@+id/spinnerCategory"
-        android:layout_width="306dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="44dp"
+        android:textColor="#000000"
+        android:layout_width="384dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="14dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageCategory" />
 
@@ -45,7 +48,7 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Ürün ID"
+        android:hint="Ürün ID"
         app:layout_constraintStart_toStartOf="@+id/spinnerCategory"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
@@ -56,7 +59,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Ürün Adı"
+        android:hint="Ürün Adı"
         app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
@@ -67,7 +70,7 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Ürün Fiyatı"
+        android:hint="Ürün Fiyatı"
         app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
 
