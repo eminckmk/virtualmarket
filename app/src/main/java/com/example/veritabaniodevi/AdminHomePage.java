@@ -1,7 +1,9 @@
 package com.example.veritabaniodevi;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -37,7 +39,7 @@ public class AdminHomePage extends AppCompatActivity {
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference categoryRef = db.collection("Category");
     private  AdapterCategory adapterCategory;
-
+    FloatingActionButton fabCategoryAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,16 @@ public class AdminHomePage extends AppCompatActivity {
 
 
         getDataFromFirestore();
-
         setUpRecyclerview();
+
+        fabCategoryAdd = findViewById(R.id.fabCategoryAdd);
+        fabCategoryAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminHomePage.this,AdminCategoryAdd.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -66,6 +76,8 @@ public class AdminHomePage extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapterCategory);
+
+
 
     }
 

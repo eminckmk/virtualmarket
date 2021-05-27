@@ -19,6 +19,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -34,12 +35,14 @@ import com.squareup.picasso.Picasso;
 import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
+
 public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, AdapterCategory.CategoryHolder> {
 
     private ArrayList<String> userCommentList;
     private ArrayList<String> userImageList;
     private Context context;
-    private FirebaseFirestore firebaseFirestore;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     public AdapterCategory(@NonNull FirestoreRecyclerOptions<Categorys> options,ArrayList<String> userCommentList, ArrayList<String> userImageList) {
         super(options);
@@ -48,11 +51,12 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull CategoryHolder categoryHolder, int i, @NonNull Categorys categorys) {
+    protected void onBindViewHolder(@NonNull CategoryHolder categoryHolder, int position, @NonNull Categorys categorys) {
 
-        categoryHolder.textCategoryName.setText(userCommentList.get(i));
+        categoryHolder.textCategoryName.setText(userCommentList.get(position));
 
-        Picasso.get().load(userImageList.get(i)).into(categoryHolder.categoryimage);
+        Picasso.get().load(userImageList.get(position)).into(categoryHolder.categoryimage);
+
         categoryHolder.categoryimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,16 +64,18 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
             }
         });
 
+       /* String documentId = getSnapshots().getSnapshot(position).getId();
+        Log.e( "onBindViewHolder: ",documentId );*/
+
+
         categoryHolder.imageButtonCategoryDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
+                String documentId = getSnapshots().getSnapshot(position).getId();
+                Log.e( "onBindViewHolder: ",position+" +  "+ documentId );
 
-
-                String myId = getSnapshots().getSnapshot(i).getReference().getId();
-                Log.e( "onClick: ",myId);
-                DocumentReference documentReference = firebaseFirestore.collection("Category").document(myId);
+                DocumentReference documentReference = firebaseFirestore.collection("Category").document(documentId);
 
 
 
@@ -77,6 +83,8 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+
+
                             Log.e("s","oldu" );
                         }
                     }
