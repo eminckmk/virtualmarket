@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class AdminHomePage extends AppCompatActivity {
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
     FirestoreRecyclerOptions<Categorys> test;
+    Context context;
 
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference categoryRef = db.collection("Category");
@@ -45,6 +47,7 @@ public class AdminHomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home_page);
+
 
         userCommentFromFB = new ArrayList<>();
         userEmailFromFB = new ArrayList<>();
@@ -70,7 +73,7 @@ public class AdminHomePage extends AppCompatActivity {
 
         FirestoreRecyclerOptions<Categorys> options = new FirestoreRecyclerOptions.Builder<Categorys>().setQuery(query,Categorys.class).build();
 
-        adapterCategory = new AdapterCategory(options,userCommentFromFB,userImageFromFB);
+        adapterCategory = new AdapterCategory(options,userCommentFromFB,userImageFromFB,this);
 
         RecyclerView recyclerView = findViewById(R.id.rv2);
         recyclerView.setHasFixedSize(true);
@@ -98,7 +101,7 @@ public class AdminHomePage extends AppCompatActivity {
 
         CollectionReference collectionReference = db.collection("Category");
 
-        collectionReference.orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        collectionReference.orderBy("comment", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 

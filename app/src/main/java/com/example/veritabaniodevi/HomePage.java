@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.base.Converter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,57 +35,94 @@ import java.util.Map;
 
 public class HomePage extends AppCompatActivity {
 
-    private RecyclerView rv;
-    private ArrayList<Categorys> categorysArrayList;
-    private AdapterCategory adapter;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
     ArrayList<String> userEmailFromFB;
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
-
+    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference categoryRef = db.collection("Category");
+    private  UserCategoryAdapter adapterCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        userCommentFromFB = new ArrayList<>();
+        userEmailFromFB = new ArrayList<>();
+        userImageFromFB = new ArrayList<>();
+
+        getDataFromFirestore();
+        setUpRecyclerview();
 
 
-       /* rv = findViewById(R.id.rv);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+
+    }
+
+    private void  setUpRecyclerview(){
+        Query query = categoryRef.orderBy("comment",Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<Categorys> options = new FirestoreRecyclerOptions.Builder<Categorys>().setQuery(query,Categorys.class).build();
+
+        adapterCategory = new UserCategoryAdapter(options,userCommentFromFB,userImageFromFB);
+
+        RecyclerView recyclerView = findViewById(R.id.rv);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapterCategory);
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapterCategory.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapterCategory.stopListening();
+    }
+
+    public void getDataFromFirestore() {
+
+        CollectionReference collectionReference = db.collection("Category");
+
+        collectionReference.orderBy("comment", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                if (e != null) {
+                    Toast.makeText(HomePage.this, e.getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
+                }
+
+                if (queryDocumentSnapshots != null) {
+
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+
+                        Map<String, Object> data = snapshot.getData();
+
+                        //Casting
+                        String comment = (String) data.get("comment");
+                        String downloadUrl = (String) data.get("downloadurl");
+
+                        userCommentFromFB.add(comment);
+                        userImageFromFB.add(downloadUrl);
+
+                        try {
+                            adapterCategory.notifyDataSetChanged();
+                        } catch (Exception ea) {
+
+                        }
 
 
-        Categorys c1 = new Categorys("Tüm ürünler","tumurunler");
-        Categorys c2 = new Categorys("Su","su");
-        Categorys c3 = new Categorys("Meyve & Sebze","meyve");
-        Categorys c4 = new Categorys("Temel Gıda","temel");
-        Categorys c5 = new Categorys("Atıştırmalık","atistirmalik");
-        Categorys c6 = new Categorys("Dondurma","Dondurma");
-        Categorys c7 = new Categorys("İçecek","icecek");
-        Categorys c8 = new Categorys("Süt & Kahvaltı","kahvalti");
-        Categorys c9 = new Categorys("Kişisel Bakım","bakim");
-        Categorys c10 = new Categorys("Giyim","giyim");
-        Categorys c11 = new Categorys("Teknoloji","teknology");
-
-        categorysArrayList = new ArrayList<>();
-        categorysArrayList.add(c1);
-        categorysArrayList.add(c2);
-        categorysArrayList.add(c3);
-        categorysArrayList.add(c4);
-        categorysArrayList.add(c5);
-        categorysArrayList.add(c6);
-        categorysArrayList.add(c7);
-        categorysArrayList.add(c8);
-        categorysArrayList.add(c9);
-        categorysArrayList.add(c10);
-        categorysArrayList.add(c11);
-
-        adapter = new AdapterCategory(this,categorysArrayList);
-        rv.setAdapter(adapter);*/
+                    }
 
 
+                }
+
+
+            }
+        });
     }
 
 

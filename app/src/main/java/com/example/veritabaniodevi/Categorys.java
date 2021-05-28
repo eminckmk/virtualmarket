@@ -3,6 +3,16 @@ package com.example.veritabaniodevi;
 public class Categorys {
 
     private String categoryName;
+    private String productPrice;
+
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
     private String imageName;
 
     public String getCategoryName() {
@@ -21,9 +31,10 @@ public class Categorys {
         this.imageName = imageName;
     }
 
-    public Categorys(String categoryName, String imageName) {
+    public Categorys(String categoryName, String imageName,String productPrice) {
         this.categoryName = categoryName;
         this.imageName = imageName;
+        this.productPrice = productPrice;
     }
 
     public Categorys() {

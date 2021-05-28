@@ -44,6 +44,7 @@ public class AdminCategoryAdd extends AppCompatActivity {
     ImageView imageCategory;
     EditText textCategory;
     Uri imageData;
+
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
@@ -62,6 +63,8 @@ public class AdminCategoryAdd extends AppCompatActivity {
         storageReference = firebaseStorage.getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
+
 
 
     }

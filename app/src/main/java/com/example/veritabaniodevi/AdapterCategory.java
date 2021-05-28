@@ -44,8 +44,9 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
     private Context context;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    public AdapterCategory(@NonNull FirestoreRecyclerOptions<Categorys> options,ArrayList<String> userCommentList, ArrayList<String> userImageList) {
+    public AdapterCategory(@NonNull FirestoreRecyclerOptions<Categorys> options,ArrayList<String> userCommentList, ArrayList<String> userImageList,Context context) {
         super(options);
+        this.context = context;
         this.userCommentList = userCommentList;
         this.userImageList = userImageList;
     }
@@ -55,17 +56,21 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
 
         categoryHolder.textCategoryName.setText(userCommentList.get(position));
 
+        categoryHolder.textPrice.setVisibility(View.GONE);
         Picasso.get().load(userImageList.get(position)).into(categoryHolder.categoryimage);
 
         categoryHolder.categoryimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(),AdminProduct.class));
+
+               // v.getContext().startActivity(new Intent(v.getContext(),AdminProduct.class));
+
+                Intent intent = new Intent(context,AdminProduct.class);
+                intent.putExtra("Atıştırmalık",categoryHolder.textCategoryName.getText());
+                context.startActivity(intent);
+                notifyDataSetChanged();
             }
         });
-
-       /* String documentId = getSnapshots().getSnapshot(position).getId();
-        Log.e( "onBindViewHolder: ",documentId );*/
 
 
         categoryHolder.imageButtonCategoryDelete.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +79,7 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
 
                 String documentId = getSnapshots().getSnapshot(position).getId();
                 Log.e( "onBindViewHolder: ",position+" +  "+ documentId );
-
                 DocumentReference documentReference = firebaseFirestore.collection("Category").document(documentId);
-
 
 
                 documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -85,14 +88,16 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
                         if(task.isSuccessful()){
 
 
+                            notifyDataSetChanged();
                             Log.e("s","oldu" );
                         }
                     }
                 });
 
-
             }
+
         });
+
     }
 
     @NonNull
@@ -108,12 +113,14 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
         ImageView categoryimage;
         TextView textCategoryName;
         ImageButton imageButtonCategoryDelete;
+        TextView textPrice;
 
         public CategoryHolder(@NonNull View itemView) {
             super(itemView);
             textCategoryName = itemView.findViewById(R.id.textViewCategoryName);
             imageButtonCategoryDelete = itemView.findViewById(R.id.imageButtonCategoryDelete);
             categoryimage = itemView.findViewById(R.id.imageViewCategoryImage);
+            textPrice = itemView.findViewById(R.id.textPrice);
         }
     }
 

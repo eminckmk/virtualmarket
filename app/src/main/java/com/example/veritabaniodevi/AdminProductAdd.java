@@ -25,20 +25,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class AdminProductAdd extends AppCompatActivity {
 
@@ -50,14 +58,22 @@ public class AdminProductAdd extends AppCompatActivity {
     private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    Bitmap selectedImage;
-    ImageView imageCategory;
-    EditText textCategory;
-    Uri imageData;
+    public HashMap<String, Object> postData = new HashMap<>();
+
+    Bitmap selectedImage2;
+    ImageView imageCategory2;
+    EditText textCategory2;
+    EditText textPrice;
+    Uri imageData2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product_add);
+
+        textCategory2 =  findViewById(R.id.editTextProductName);
+        imageCategory2 = findViewById(R.id.imageCategory2);
+        textPrice = findViewById(R.id.editTextProductPrice);
 
         categorys.add("Tüm ürünler");
         categorys.add("Damacana");
@@ -67,22 +83,23 @@ public class AdminProductAdd extends AppCompatActivity {
         categorys.add("Atıştırmalık");
         categorys.add("İçecek");
 
-
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         spinnerCategory = findViewById(R.id.spinnerCategory);
         userCommentFromFB = new ArrayList<>();
         categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,android.R.id.text1,categorys);//Categorys yerine userCommentFromFB
         categoryAdapter.notifyDataSetChanged();
         spinnerCategory.setAdapter(categoryAdapter);
-        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        getDataFromFirestore();
 
 
 
     }
 
-    public void selectImage(View view){
+    public void selectImage2(View view){
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},1);
@@ -114,17 +131,17 @@ public class AdminProductAdd extends AppCompatActivity {
 
         if (requestCode == 2 && resultCode == RESULT_OK && data != null ) {
 
-            imageData = data.getData();
+            imageData2 = data.getData();
 
             try {
 
                 if (Build.VERSION.SDK_INT >= 28) {
-                    ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(),imageData);
-                    selectedImage = ImageDecoder.decodeBitmap(source);
-                    imageCategory.setImageBitmap(selectedImage);
+                    ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(),imageData2);
+                    selectedImage2 = ImageDecoder.decodeBitmap(source);
+                    imageCategory2.setImageBitmap(selectedImage2);
                 } else {
-                    selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageData);
-                    imageCategory.setImageBitmap(selectedImage);
+                    selectedImage2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageData2);
+                    imageCategory2.setImageBitmap(selectedImage2);
                 }
 
 
@@ -140,30 +157,65 @@ public class AdminProductAdd extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-     public void getDataFromFirestore() {
 
-        CollectionReference collectionReference = firebaseFirestore.collection("Category");
+    public void upload2 (View view){
+        if (imageData2 != null) {
 
-        collectionReference.orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            UUID uuid = UUID.randomUUID();
+            final String imageName = "images/" + uuid + ".jpg";
+            String spinnerCategorytext = spinnerCategory.getSelectedItem().toString();
 
 
-                if (queryDocumentSnapshots != null) {
+            storageReference.child(imageName).putFile(imageData2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                    //Download URL
 
-                        Map<String,Object> data = snapshot.getData();
+                    StorageReference newReference = FirebaseStorage.getInstance().getReference(imageName);
+                    newReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
 
-                        //Casting
-                        String comment = (String) data.get("comment");
+                            String downloadUrl = uri.toString();
 
-                        userCommentFromFB.add(comment);
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-                    }
+                            String comment = textCategory2.getText().toString();
+                            String price = textPrice.getText().toString();
+
+
+                            postData.put("downloadurl",downloadUrl);
+                            postData.put("comment",comment);
+                            postData.put("price",price);
+
+
+                            firebaseFirestore.collection(spinnerCategorytext).add(postData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+
+                                    Intent intent = new Intent(AdminProductAdd.this,AdminHomePage.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AdminProductAdd.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
                 }
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AdminProductAdd.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
 
 
     }
