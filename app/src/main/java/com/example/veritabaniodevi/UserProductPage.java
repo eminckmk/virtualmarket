@@ -1,25 +1,17 @@
 package com.example.veritabaniodevi;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.MemoryFile;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.common.base.Converter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -27,45 +19,56 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.installations.remote.TokenResult;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class HomePage extends AppCompatActivity {
+public class UserProductPage extends AppCompatActivity {
 
-    ArrayList<String> userEmailFromFB;
+    FloatingActionButton fabBasket;
+    String a;
+    ArrayList<String> userPriceFromFB;
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
-    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference categoryRef = db.collection("Category");
-    private  UserCategoryAdapter adapterCategory;
+    private ArrayList<BasketModel> productFullList = new ArrayList<>();
+    private  UserProductAdapter adapterCategory;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference categoryRef ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_user_product_page);
+
+        fabBasket = findViewById(R.id.fabBasket);
+        fabBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProductPage.this,UserBasket.class);
+                startActivity(intent);
+            }
+        });
 
         userCommentFromFB = new ArrayList<>();
-        userEmailFromFB = new ArrayList<>();
+        userPriceFromFB = new ArrayList<>();
         userImageFromFB = new ArrayList<>();
+
+        a = (String) getIntent().getStringExtra("Atıştırmalık");
+        categoryRef = db.collection(a);
+
 
         getDataFromFirestore();
         setUpRecyclerview();
 
-
-
     }
-
     private void  setUpRecyclerview(){
         Query query = categoryRef.orderBy("comment",Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Categorys> options = new FirestoreRecyclerOptions.Builder<Categorys>().setQuery(query,Categorys.class).build();
 
-        adapterCategory = new UserCategoryAdapter(options,userCommentFromFB,userImageFromFB);
+        adapterCategory = new UserProductAdapter(options,userCommentFromFB,userImageFromFB,userPriceFromFB,this);
 
-        RecyclerView recyclerView = findViewById(R.id.rv);
+        RecyclerView recyclerView = findViewById(R.id.rvUserProduct);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapterCategory);
@@ -82,17 +85,16 @@ public class HomePage extends AppCompatActivity {
         super.onStop();
         adapterCategory.stopListening();
     }
-
     public void getDataFromFirestore() {
 
-        CollectionReference collectionReference = db.collection("Category");
+        CollectionReference collectionReference = db.collection(a);
 
         collectionReference.orderBy("comment", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                 if (e != null) {
-                    Toast.makeText(HomePage.this, e.getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserProductPage.this, e.getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
                 }
 
                 if (queryDocumentSnapshots != null) {
@@ -101,31 +103,19 @@ public class HomePage extends AppCompatActivity {
 
                         Map<String, Object> data = snapshot.getData();
 
-                        //Casting
                         String comment = (String) data.get("comment");
                         String downloadUrl = (String) data.get("downloadurl");
+                        String price = (String) data.get("price");
 
                         userCommentFromFB.add(comment);
                         userImageFromFB.add(downloadUrl);
-
-                        try {
-                            adapterCategory.notifyDataSetChanged();
-                        } catch (Exception ea) {
-
-                        }
-
+                        userPriceFromFB.add(price);
+                        adapterCategory.notifyDataSetChanged();//
 
                     }
-
-
                 }
-
-
             }
         });
     }
-
-
-
 
 }

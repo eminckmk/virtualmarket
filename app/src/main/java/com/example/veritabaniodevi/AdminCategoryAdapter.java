@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,32 +18,20 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.squareup.okhttp.internal.DiskLruCache;
 import com.squareup.picasso.Picasso;
 
-import java.net.CookieHandler;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Map;
 
-public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, AdapterCategory.CategoryHolder> {
+public class AdminCategoryAdapter extends FirestoreRecyclerAdapter<Categorys, AdminCategoryAdapter.CategoryHolder> {
 
     private ArrayList<String> userCommentList;
     private ArrayList<String> userImageList;
     private Context context;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    public AdapterCategory(@NonNull FirestoreRecyclerOptions<Categorys> options,ArrayList<String> userCommentList, ArrayList<String> userImageList,Context context) {
+    public AdminCategoryAdapter(@NonNull FirestoreRecyclerOptions<Categorys> options, ArrayList<String> userCommentList, ArrayList<String> userImageList, Context context) {
         super(options);
         this.context = context;
         this.userCommentList = userCommentList;
@@ -87,7 +74,6 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
 
-
                             notifyDataSetChanged();
                             Log.e("s","oldu" );
                         }
@@ -103,7 +89,7 @@ public class AdapterCategory extends FirestoreRecyclerAdapter<Categorys, Adapter
     @NonNull
     @Override
     public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v =LayoutInflater.from(parent.getContext()).inflate(R.layout.card_category,parent,false);
+        View v =LayoutInflater.from(parent.getContext()).inflate(R.layout.card_admin,parent,false);
         return new CategoryHolder(v);
     }
 

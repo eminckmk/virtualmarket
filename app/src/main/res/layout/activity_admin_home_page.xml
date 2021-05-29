@@ -6,13 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".AdminHomePage">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv2"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarAdminCategoryy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00BCD4"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/AppTheme.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv2"
+        android:layout_width="412dp"
+        android:layout_height="646dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarAdminCategoryy" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCategoryAdd"
@@ -21,7 +32,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="18dp"
         android:clickable="true"
-        app:backgroundTint="#13D1EA"
+        app:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add" />

@@ -36,24 +36,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewCategoryImage" />
 
-            <ImageButton
-                android:id="@+id/imageButtonCategoryDelete"
-                android:layout_width="34dp"
-                android:layout_height="37dp"
-                android:background="@drawable/ic_baseline_horizontal_rule_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_horizontal_rule_24" />
-
             <TextView
-                android:id="@+id/textPrice"
+                android:id="@+id/textViewPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textViewCategoryName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCategoryName" />
+
+            <TextView
+                android:id="@+id/textProductPiece"
+                android:layout_width="24dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="24dp"
+                android:background="#00BCD4"
+                android:gravity="center"
+                android:text="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imageButtonProductAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00BCD4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add" />
+
+            <ImageButton
+                android:id="@+id/imageButtonProductReduce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00BCD4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/imageViewCategoryImage"
+                app:layout_constraintTop_toBottomOf="@+id/textProductPiece"
+                app:srcCompat="@drawable/ic_baseline_horizontal_rule_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+
 </LinearLayout>

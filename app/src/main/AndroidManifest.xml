@@ -13,14 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Veritabaniodevi"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AdminProductAdd"></activity>
+        <activity android:name=".UserBasket"></activity>
+        <activity android:name=".UserProductPage" />
+        <activity android:name=".AdminProductAdd" />
         <activity android:name=".AdminProduct" />
         <activity android:name=".AdminCategoryAdd" />
         <activity android:name=".AdminHomePage" />
-        <activity android:name=".HomePage" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".Signup" />
         <activity android:name=".Login" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".UserCategoryPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

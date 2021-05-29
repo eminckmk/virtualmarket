@@ -79,7 +79,7 @@ public class AdminProductAdapter extends FirestoreRecyclerAdapter<Categorys, Adm
     @NonNull
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_category,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_admin,parent,false);
         return new ProductHolder(v);
     }
 

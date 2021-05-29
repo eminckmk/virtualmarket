@@ -15,4 +15,9 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        ...
+        <item name="actionMenuTextColor">@color/black</item>
+        ...
+    </style>
 </resources>

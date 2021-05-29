@@ -1,18 +1,12 @@
 package com.example.veritabaniodevi;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,45 +23,31 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
-
-public class AdminHomePage extends AppCompatActivity {
+public class UserCategoryPage extends AppCompatActivity {
 
     ArrayList<String> userEmailFromFB;
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
-    FirestoreRecyclerOptions<Categorys> test;
-    Context context;
-    private Toolbar toolbar;
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference categoryRef = db.collection("Category");
-    private AdminCategoryAdapter adminCategoryAdapter;
-    FloatingActionButton fabCategoryAdd;
+    private  UserCategoryAdapter adapterCategory;
+    private FloatingActionButton fabBasket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_home_page);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbarAdminCategoryy);
-        toolbar.setTitle("Admin Kategori");
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_home_page);
 
         userCommentFromFB = new ArrayList<>();
         userEmailFromFB = new ArrayList<>();
         userImageFromFB = new ArrayList<>();
 
-
         getDataFromFirestore();
         setUpRecyclerview();
 
-        fabCategoryAdd = findViewById(R.id.fabCategoryAdd);
-        fabCategoryAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminHomePage.this,AdminCategoryAdd.class);
-                startActivity(intent);
-            }
-        });
+
+
+
 
     }
 
@@ -76,29 +56,25 @@ public class AdminHomePage extends AppCompatActivity {
 
         FirestoreRecyclerOptions<Categorys> options = new FirestoreRecyclerOptions.Builder<Categorys>().setQuery(query,Categorys.class).build();
 
-        adminCategoryAdapter = new AdminCategoryAdapter(options,userCommentFromFB,userImageFromFB,this);
+        adapterCategory = new UserCategoryAdapter(options,userCommentFromFB,userImageFromFB,this);
 
-        RecyclerView recyclerView = findViewById(R.id.rv2);
+        RecyclerView recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(adminCategoryAdapter);
-
-
+        recyclerView.setAdapter(adapterCategory);
 
     }
-
     @Override
     protected void onStart() {
         super.onStart();
-        adminCategoryAdapter.startListening();
+        adapterCategory.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        adminCategoryAdapter.stopListening();
+        adapterCategory.stopListening();
     }
-
 
     public void getDataFromFirestore() {
 
@@ -109,7 +85,7 @@ public class AdminHomePage extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                 if (e != null) {
-                    Toast.makeText(AdminHomePage.this, e.getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserCategoryPage.this, e.getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
                 }
 
                 if (queryDocumentSnapshots != null) {
@@ -126,7 +102,7 @@ public class AdminHomePage extends AppCompatActivity {
                         userImageFromFB.add(downloadUrl);
 
                         try {
-                            adminCategoryAdapter.notifyDataSetChanged();
+                            adapterCategory.notifyDataSetChanged();
                         } catch (Exception ea) {
 
                         }
@@ -142,21 +118,7 @@ public class AdminHomePage extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbarmenu,menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.itemReflesh:
-                Intent intent = new Intent(AdminHomePage.this,AdminHomePage.class);
-                startActivity(intent);
-                finish();
-                Log.e( "onOptionsItemSelected: ", "oldu");
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
+
 }
