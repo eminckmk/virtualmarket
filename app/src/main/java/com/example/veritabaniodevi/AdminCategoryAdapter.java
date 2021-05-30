@@ -42,10 +42,8 @@ public class AdminCategoryAdapter extends FirestoreRecyclerAdapter<Categorys, Ad
     protected void onBindViewHolder(@NonNull CategoryHolder categoryHolder, int position, @NonNull Categorys categorys) {
 
         categoryHolder.textCategoryName.setText(userCommentList.get(position));
-
         categoryHolder.textPrice.setVisibility(View.GONE);
         Picasso.get().load(userImageList.get(position)).into(categoryHolder.categoryimage);
-
         categoryHolder.categoryimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,8 +65,6 @@ public class AdminCategoryAdapter extends FirestoreRecyclerAdapter<Categorys, Ad
                 String documentId = getSnapshots().getSnapshot(position).getId();
                 Log.e( "onBindViewHolder: ",position+" +  "+ documentId );
                 DocumentReference documentReference = firebaseFirestore.collection("Category").document(documentId);
-
-
                 documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -79,9 +75,7 @@ public class AdminCategoryAdapter extends FirestoreRecyclerAdapter<Categorys, Ad
                         }
                     }
                 });
-
             }
-
         });
 
     }

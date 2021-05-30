@@ -26,7 +26,6 @@ public class UserProductAdapter extends FirestoreRecyclerAdapter<Categorys, User
     private ArrayList<String> productImageList;
     private ArrayList<String> productPriceList;
     private ArrayList<BasketModel> productFullList ;
-
     public Context context;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -41,7 +40,6 @@ public class UserProductAdapter extends FirestoreRecyclerAdapter<Categorys, User
     @Override
     protected void onBindViewHolder(@NonNull UserProductHolder userProductHolder, int i, @NonNull Categorys categorys) {
 
-
         userProductHolder.textProductName.setText(productNameList.get(i));
         userProductHolder.textProductPrice.setText(productPriceList.get(i));
         Picasso.get().load(productImageList.get(i)).into(userProductHolder.productimage);
@@ -54,6 +52,51 @@ public class UserProductAdapter extends FirestoreRecyclerAdapter<Categorys, User
         else{
             userProductHolder.textProductPiece.setVisibility(View.VISIBLE);
             userProductHolder.imageButtonProductReduce.setVisibility(View.VISIBLE);
+
+            String price = ((String)userProductHolder.textProductPrice.getText());
+            String piece =((String)userProductHolder.textProductPiece.getText());
+            int totalPiece = Integer.valueOf(price)*Integer.valueOf(piece);
+
+            productFullList = (ArrayList<BasketModel>) PrefConfig.readListFromPref(context,"ListKey13");
+
+
+            if(productFullList==null){
+
+                productFullList = new ArrayList<>();
+                BasketModel b1 = new BasketModel((String) userProductHolder.textProductName.getText(), price, piece,String.valueOf(totalPiece));
+                productFullList.add(b1);
+
+                for(int j =0; j<productFullList.size();j++){
+                    Log.e("onBindViewHolder: ", String.valueOf("\nÜrün Adı = "+productFullList.get(j).getProductName()) + "\nÜrün Fiyatı = " + productFullList.get(j).getProductPrice()+"TL"+
+                            "\nÜrün Adeti = "+productFullList.get(j).getProductPiece()+"Adet"+"\nÜrün Ara Toplam = "+String.valueOf(totalPiece)+"TL");
+                }
+
+            }
+            else {
+                BasketModel b1 = new BasketModel((String) userProductHolder.textProductName.getText(), price, piece,String.valueOf(totalPiece));
+                productFullList.add(b1);
+
+                for(int j =0; j<productFullList.size();j++){
+
+                    for(int k =0;k<j;k++){
+                        if(productFullList.get(j).getProductName().equals(productFullList.get(k).getProductName())&& Integer.valueOf(productFullList.get(j).getProductPiece())>Integer.valueOf(productFullList.get(k).getProductPiece())){
+
+
+                            Log.e( "onBindViewHolder: ", "eşittir");
+                        }
+                        else{
+                            Log.e( "onBindViewHolder: ","eşit değil\n+"+"J degeri"+j+ "\nK degeri"+k+"\nj Degeri adet "+ String.valueOf(Integer.valueOf(productFullList.get(j).getProductPiece())+"\nK Degeri adet "+ String.valueOf(Integer.valueOf(productFullList.get(k).getProductPiece()))));}
+                    }
+
+
+                    Log.e("onBindViewHolder: ", String.valueOf("\nÜrün Adı = "+productFullList.get(j).getProductName()) + "\nÜrün Fiyatı = " + productFullList.get(j).getProductPrice()+"TL"+
+                            "\nÜrün Adeti = "+productFullList.get(j).getProductPiece()+"Adet"+"\nÜrün Ara Toplam = "+String.valueOf(totalPiece)+"TL");
+                }
+
+            }
+
+            PrefConfig.writeListInPref(context,productFullList,"ListKey13");
+
 
             //Log.e( "onBindViewHolder: ", String.valueOf(productFullList));
         }
@@ -73,6 +116,7 @@ public class UserProductAdapter extends FirestoreRecyclerAdapter<Categorys, User
                 notifyDataSetChanged();
             }
         });
+
     }
 
     @NonNull
@@ -103,7 +147,7 @@ public class UserProductAdapter extends FirestoreRecyclerAdapter<Categorys, User
 
 
         }
-
-
     }
+
+
 }
