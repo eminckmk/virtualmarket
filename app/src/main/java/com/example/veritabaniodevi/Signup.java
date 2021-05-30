@@ -126,10 +126,8 @@ public class Signup extends AppCompatActivity {
                     String date = textdate.getText().toString().trim();
 
                     if (TextUtils.isEmpty(email) || TextUtils.isEmpty(name) || TextUtils.isEmpty(password) || TextUtils.isEmpty(date)) {
-
                         textMail.setError("Username or Password cannot be lank");
                         textPassword.setError("Username or Password cannot be lank");
-
                     }
 
                     fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -149,27 +147,14 @@ public class Signup extends AppCompatActivity {
                                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-
                                         Log.e("onSuccess: ", userID);
-
                                     }
                                 });
-
-
                             } else {
                                 Toast.makeText(Signup.this,  task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
-
-
                         }
                     });
-
-             /*   FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Kullanici Bilgileri");
-
-                UserInformation userInformation = new UserInformation(1,textName.getText().toString(),textMail.getText().toString(),textPassword.getText().toString(),textdate.getText().toString());
-                myRef.push().setValue(userInformation);*/
-
 
                 }catch (Exception ea){
                     Toast.makeText(Signup.this,"Username or Password cannot be lank",Toast.LENGTH_SHORT).show();

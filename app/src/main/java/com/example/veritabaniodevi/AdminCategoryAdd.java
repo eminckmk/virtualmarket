@@ -88,7 +88,6 @@ public class AdminCategoryAdd extends AppCompatActivity {
 
                             String comment = textCategory.getText().toString();
 
-
                             postData.put("useremail",userEmail);
                             postData.put("downloadurl",downloadUrl);
                             postData.put("comment",comment);

@@ -77,18 +77,14 @@ public class AdminHomePage extends AppCompatActivity {
     }
 
     private void  setUpRecyclerview(){
+
         Query query = categoryRef.orderBy("comment",Query.Direction.DESCENDING);
-
         FirestoreRecyclerOptions<Categorys> options = new FirestoreRecyclerOptions.Builder<Categorys>().setQuery(query,Categorys.class).build();
-
         adminCategoryAdapter = new AdminCategoryAdapter(options,userCommentFromFB,userImageFromFB,this);
-
         RecyclerView recyclerView = findViewById(R.id.rv2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(adminCategoryAdapter);
-
-
 
     }
 

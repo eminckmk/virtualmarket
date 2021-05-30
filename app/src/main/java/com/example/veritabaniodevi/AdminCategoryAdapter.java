@@ -48,15 +48,12 @@ public class AdminCategoryAdapter extends FirestoreRecyclerAdapter<Categorys, Ad
             @Override
             public void onClick(View v) {
 
-               // v.getContext().startActivity(new Intent(v.getContext(),AdminProduct.class));
-
                 Intent intent = new Intent(context,AdminProduct.class);
-                intent.putExtra("Atıştırmalık",categoryHolder.textCategoryName.getText());
+                intent.putExtra("data",categoryHolder.textCategoryName.getText());
                 context.startActivity(intent);
                 notifyDataSetChanged();
             }
         });
-
 
         categoryHolder.imageButtonCategoryDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,15 +66,12 @@ public class AdminCategoryAdapter extends FirestoreRecyclerAdapter<Categorys, Ad
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-
                             notifyDataSetChanged();
-                            Log.e("s","oldu" );
                         }
                     }
                 });
             }
         });
-
     }
 
     @NonNull

@@ -56,7 +56,6 @@ public class UserSettings extends AppCompatActivity {
         checkBox = findViewById(R.id.checkBox);
         fAuth = FirebaseAuth.getInstance();
         userID = fAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
 
         toolbarUserSettings.setTitle("User Settings");
         toolbarUserSettings.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
@@ -68,10 +67,7 @@ public class UserSettings extends AppCompatActivity {
         });
 
 
-
-
-
-
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
