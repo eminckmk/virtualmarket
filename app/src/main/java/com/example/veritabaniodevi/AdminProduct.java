@@ -2,6 +2,7 @@ package com.example.veritabaniodevi;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -31,8 +32,8 @@ public class AdminProduct extends AppCompatActivity {
     ArrayList<String> userPriceFromFB;
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
+    private Toolbar toolbarAdminProduct;
     public String a;
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference categoryRef ;
     private  AdminProductAdapter adapterCategory;
@@ -43,12 +44,21 @@ public class AdminProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product);
 
-
         a = (String) getIntent().getStringExtra("Atıştırmalık");
         categoryRef = db.collection(a);
         userCommentFromFB = new ArrayList<>();
         userPriceFromFB = new ArrayList<>();
         userImageFromFB = new ArrayList<>();
+
+        toolbarAdminProduct = findViewById(R.id.toolbarAdminProduct);
+        toolbarAdminProduct.setTitle("            Admin Product");
+        toolbarAdminProduct.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbarAdminProduct.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         getDataFromFirestore();

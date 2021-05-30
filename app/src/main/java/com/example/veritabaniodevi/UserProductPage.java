@@ -2,6 +2,7 @@ package com.example.veritabaniodevi;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -30,6 +31,7 @@ public class UserProductPage extends AppCompatActivity {
     ArrayList<String> userPriceFromFB;
     ArrayList<String> userCommentFromFB;
     ArrayList<String> userImageFromFB;
+    private Toolbar toolbarUserProduct;
     private ArrayList<BasketModel> productFullList = new ArrayList<>();
     private  UserProductAdapter adapterCategory;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -39,6 +41,16 @@ public class UserProductPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_product_page);
+
+        toolbarUserProduct = findViewById(R.id.toolbarUserProduct);
+        toolbarUserProduct.setTitle("Products");
+        toolbarUserProduct.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbarUserProduct.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         fabBasket = findViewById(R.id.fabBasket);
         fabBasket.setOnClickListener(new View.OnClickListener() {

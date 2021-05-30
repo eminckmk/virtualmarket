@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -37,6 +38,7 @@ public class AdminHomePage extends AppCompatActivity {
     ArrayList<String> userImageFromFB;
     FirestoreRecyclerOptions<Categorys> test;
     Context context;
+    private TextView textToolbarAdminCategory;
     private Toolbar toolbar;
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference categoryRef = db.collection("Category");
@@ -48,8 +50,11 @@ public class AdminHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home_page);
 
+        textToolbarAdminCategory = findViewById(R.id.textToolbarAdminCategory);
+        textToolbarAdminCategory.setText("Admin Category");
+        textToolbarAdminCategory.setGravity(View.TEXT_ALIGNMENT_CENTER);
         toolbar = (Toolbar) findViewById(R.id.toolbarAdminCategoryy);
-        toolbar.setTitle("Admin Kategori");
+        toolbar.setTitle(" ");
         setSupportActionBar(toolbar);
 
         userCommentFromFB = new ArrayList<>();

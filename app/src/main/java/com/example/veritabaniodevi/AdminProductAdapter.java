@@ -42,7 +42,7 @@ public class AdminProductAdapter extends FirestoreRecyclerAdapter<Categorys, Adm
     protected void onBindViewHolder(@NonNull ProductHolder productHolder, int i, @NonNull Categorys categorys) {
 
         productHolder.textProductName.setText(productNameList.get(i));
-        productHolder.textProductPrice.setText(productPriceList.get(i));
+        productHolder.textProductPrice.setText(productPriceList.get(i)+"TL");
         Picasso.get().load(productImageList.get(i)).into(productHolder.productimage);
         productHolder.textProductPrice.setVisibility(View.VISIBLE);
 

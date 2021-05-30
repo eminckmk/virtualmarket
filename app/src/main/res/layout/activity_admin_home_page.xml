@@ -10,12 +10,23 @@
         android:id="@+id/toolbarAdminCategoryy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00BCD4"
+        android:background="#3F51B5"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/AppTheme.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textToolbarAdminCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="25dp" />
+    </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv2"
@@ -32,7 +43,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="18dp"
         android:clickable="true"
-        app:backgroundTint="#00BCD4"
+        app:backgroundTint="#3F51B5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add" />

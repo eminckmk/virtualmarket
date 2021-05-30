@@ -64,24 +64,17 @@ public class AdminCategoryAdd extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-
-
-
     }
 
     public void upload (View view){
         if (imageData != null) {
 
-
-            //universal unique id
             UUID uuid = UUID.randomUUID();
             final String imageName = "images/" + uuid + ".jpg";
 
             storageReference.child(imageName).putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    //Download URL
 
                     StorageReference newReference = FirebaseStorage.getInstance().getReference(imageName);
                     newReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -101,7 +94,6 @@ public class AdminCategoryAdd extends AppCompatActivity {
                             postData.put("comment",comment);
                             postData.put("date", FieldValue.serverTimestamp());
 
-
                             firebaseFirestore.collection("Category").add(postData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
@@ -117,14 +109,8 @@ public class AdminCategoryAdd extends AppCompatActivity {
                                     Toast.makeText(AdminCategoryAdd.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                                 }
                             });
-
-
-
-
                         }
                     });
-
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -132,11 +118,7 @@ public class AdminCategoryAdd extends AppCompatActivity {
                     Toast.makeText(AdminCategoryAdd.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                 }
             });
-
         }
-
-
-
     }
 
     public void selectImage(View view){
@@ -147,7 +129,6 @@ public class AdminCategoryAdd extends AppCompatActivity {
             Intent intentToGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intentToGallery,2);
         }
-
     }
 
     @Override
@@ -174,7 +155,6 @@ public class AdminCategoryAdd extends AppCompatActivity {
             imageData = data.getData();
 
             try {
-
                 if (Build.VERSION.SDK_INT >= 28) {
                     ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(),imageData);
                     selectedImage = ImageDecoder.decodeBitmap(source);
@@ -188,16 +168,7 @@ public class AdminCategoryAdd extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
-
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
-
-
 }

@@ -6,11 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".AdminProductAdd">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imageCategory2"
         android:layout_width="268dp"
         android:layout_height="248dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:onClick="selectImage2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -20,12 +31,12 @@
 
     <Spinner
         android:id="@+id/spinnerCategory"
-        android:textColor="#000000"
-        android:layout_width="384dp"
-        android:layout_height="68dp"
+        android:layout_width="393dp"
+        android:layout_height="42dp"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="14dp"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageCategory2" />
@@ -35,8 +46,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Add Category"
         android:onClick="upload2"
+        android:text="Add Category"
+        android:background="@drawable/buttondesing2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +62,9 @@
         android:ems="10"
         android:hint="Ürün ID"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/spinnerCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
     <EditText
@@ -59,8 +73,8 @@
         android:layout_height="54dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Ürün Adı"
+        android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="@+id/editTextProductID"
         app:layout_constraintTop_toBottomOf="@+id/editTextProductID" />
 
@@ -70,8 +84,8 @@
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Ürün Fiyatı"
+        android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="@+id/editTextProductName"
         app:layout_constraintTop_toBottomOf="@+id/editTextProductName" />
 

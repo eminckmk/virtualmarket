@@ -50,7 +50,7 @@ public class UserCategoryPage extends AppCompatActivity {
         setUpRecyclerview();
 
         toolbar = (Toolbar) findViewById(R.id.toolbarUserHome);
-        toolbar.setTitle("Kategoriler");
+        toolbar.setTitle("Categorys");
         setSupportActionBar(toolbar);
 
     }

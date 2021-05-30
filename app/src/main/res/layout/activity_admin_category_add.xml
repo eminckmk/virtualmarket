@@ -10,12 +10,12 @@
         android:id="@+id/imageCategory"
         android:layout_width="268dp"
         android:layout_height="248dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="32dp"
         android:onClick="selectImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <EditText
@@ -23,7 +23,7 @@
         android:layout_width="309dp"
         android:layout_height="53dp"
         android:layout_marginStart="51dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="51dp"
         android:ems="10"
         android:hint="Enter Category Name"
@@ -38,14 +38,26 @@
 
     <Button
         android:id="@+id/buttonAddCategory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_width="355dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/buttondesing2"
         android:onClick="upload"
         android:text="Add Category"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textCategory" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

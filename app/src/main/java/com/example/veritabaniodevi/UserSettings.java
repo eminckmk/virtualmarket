@@ -2,6 +2,7 @@ package com.example.veritabaniodevi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class UserSettings extends AppCompatActivity {
     private String userID;
     private Button buttonSave;
     private CheckBox checkBox;
+    private Toolbar toolbarUserSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,26 @@ public class UserSettings extends AppCompatActivity {
         textPersonMail = findViewById(R.id.textPersonMail);
         imagePersonImage = findViewById(R.id.imagePersonImage);
         imagePersonImage.setImageResource(R.drawable.usericon);
+        toolbarUserSettings = findViewById(R.id.toolbarUserSettings);
         buttonSave = findViewById(R.id.buttonSave);
         checkBox = findViewById(R.id.checkBox);
         fAuth = FirebaseAuth.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+
+        toolbarUserSettings.setTitle("User Settings");
+        toolbarUserSettings.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbarUserSettings.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+
+
+
 
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
